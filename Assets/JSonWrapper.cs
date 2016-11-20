@@ -10,6 +10,7 @@ using System;
 public class JSonWrapper : MonoBehaviour {
 
     public GameObject cubePrefab;
+    static string servIp = "127.0.0.1";
 
     CubePrototype cube;
     UdpClient client;
@@ -24,10 +25,12 @@ public class JSonWrapper : MonoBehaviour {
             Debug.Log("Found cube successful");
         }
 
+       
+
         try
         {
-            // IPAddress ipAddr = IPAddress.Parse("172.18.4.29");
-            IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
+             IPAddress ipAddr = IPAddress.Parse(servIp);
+           // IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
             IPEndPoint serverEP = new IPEndPoint(ipAddr, 9876);
             client = new UdpClient();
 
@@ -35,6 +38,7 @@ public class JSonWrapper : MonoBehaviour {
             string jsonString = JsonUtility.ToJson(cube);
             byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonString);
             client.Send(jsonBytes, jsonBytes.Length, serverEP);
+            Debug.Log("Sent"+ jsonString);
 
             IPEndPoint RemoteIPEndPoint = null;
             byte[] bytes = client.Receive(ref RemoteIPEndPoint);
@@ -58,7 +62,7 @@ public class JSonWrapper : MonoBehaviour {
         try
         {
             //IPAddress ipAddr = IPAddress.Parse("192.168.137.134");
-            IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
+            IPAddress ipAddr = IPAddress.Parse(servIp);
             IPEndPoint serverEP = new IPEndPoint(ipAddr, 9876);
 
             // Отправка простого сообщения

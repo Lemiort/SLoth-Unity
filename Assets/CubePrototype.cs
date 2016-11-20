@@ -3,25 +3,35 @@ using System.Collections;
 using System;
 
 [Serializable]
-public class CubePrototype : MonoBehaviour {
+public struct Transformation
+{
     public Vector3 position;
+}
 
-	// Use this for initialization
-	void Start () {
-	
-	}
+[Serializable]
+public class CubePrototype : MonoBehaviour {
+
+    [SerializeField]
+    public Transformation transformation;
+    //public Vector3 position;
+
+    // Use this for initialization
+    void Start () {
+        this.transformation.position = transform.position;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        position = transform.position;
-	}
+        //transformation.position = transform.position;
+        transformation.position = transform.position;
+    }
 
     public void Load(string savedData)
     {
         try
         {
             JsonUtility.FromJsonOverwrite(savedData, this);
-            transform.position = position;
+            this.transform.position = transformation.position;
         }
         catch (Exception ex)
         {
