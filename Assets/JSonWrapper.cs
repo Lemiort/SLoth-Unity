@@ -8,15 +8,18 @@ using System;
 
 [Serializable]
 public class JSonWrapper : MonoBehaviour {
-
+    public GameObject jsonContainerPrefab;
     public GameObject cubePrefab;
     static string servIp = "127.0.0.1";
 
-    CubePrototype cube;
+    public CubePrototype cube;
     UdpClient client;
+    public JSonContainer jsonContainer;
 
     // Use this for initialization
     void Start () {
+
+     
 
         cube = Instantiate(cubePrefab).GetComponent<CubePrototype>();
         if(cube != null)
@@ -25,7 +28,10 @@ public class JSonWrapper : MonoBehaviour {
             Debug.Log("Found cube successful");
         }
 
-       
+        jsonContainer = Instantiate(jsonContainerPrefab).GetComponent<JSonContainer>();
+        jsonContainer.objectType = "setPosition";
+        jsonContainer.objects.Add(JsonUtility.ToJson(cube));
+        string str = JsonUtility.ToJson(jsonContainer).ToString();
 
         try
         {
@@ -35,7 +41,9 @@ public class JSonWrapper : MonoBehaviour {
             client = new UdpClient();
 
             // Отправка простого сообщения
-            string jsonString = JsonUtility.ToJson(cube);
+            //string jsonString = JsonUtility.ToJson(cube);
+            string jsonString = JsonUtility.ToJson(jsonContainer);
+
             byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonString);
             client.Send(jsonBytes, jsonBytes.Length, serverEP);
             Debug.Log("Sent"+ jsonString);
@@ -66,7 +74,11 @@ public class JSonWrapper : MonoBehaviour {
             IPEndPoint serverEP = new IPEndPoint(ipAddr, 9876);
 
             // Отправка простого сообщения
-            string jsonString = JsonUtility.ToJson(cube);
+            //string jsonString = JsonUtility.ToJson(cube);
+            jsonContainer.objects[0] = JsonUtility.ToJson(cube);
+            string jsonString = JsonUtility.ToJson(jsonContainer);
+           
+
             byte[] jsonBytes = Encoding.UTF8.GetBytes(jsonString);
             client.Send(jsonBytes, jsonBytes.Length, serverEP);
 
@@ -80,7 +92,13 @@ public class JSonWrapper : MonoBehaviour {
 
 
             //JsonUtility.FromJsonOverwrite(results, cube);
-            cube.Load(results);
+            //cube.Load(results);
+            jsonContainer.Load(results);
+            if(jsonContainer.objectType == "setPosition")
+            {
+                cube.Load(jsonContainer.objects[0]);
+            }
+
             Debug.Log(results);
            // cube = JsonUtility.FromJson<CubePrototype>(results);
             // Debug.Log(Encoding.UTF8.GetBytes(JsonUtility.ToJson(cube2)));
