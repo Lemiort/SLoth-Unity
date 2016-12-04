@@ -13,10 +13,12 @@ public class CubePrototype : MonoBehaviour {
 
     [SerializeField]
     public Transformation transformation;
+    public int instanceID;
     //public Vector3 position;
 
     // Use this for initialization
     void Start () {
+        //instanceID = this.GetInstanceID();
         this.transformation.position = transform.position;
     }
 	

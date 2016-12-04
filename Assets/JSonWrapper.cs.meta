@@ -1,10 +1,14 @@
 fileFormatVersion: 2
 guid: 203e7c5f687e54241adb4b2ae23b9b0f
-timeCreated: 1476133421
+timeCreated: 1479674616
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - jsonWrapperPrefab: {fileID: 1000012238293242, guid: f85b848b27a6b2148887a6b3499e0ef9,
+      type: 2}
+  - cubePrefab: {fileID: 1000012126573322, guid: 173ae9bb68f06a245bff9495bfa93de7,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
