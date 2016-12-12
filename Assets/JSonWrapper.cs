@@ -19,6 +19,7 @@ public class JSonWrapper : MonoBehaviour {
     public GameObject cubePrefab;
 
     static string servIp = "127.0.0.1";
+    //static string servIp = "192.168.137.156";
 
     public CubePrototype cube;
     public CubePrototype tempCube;
